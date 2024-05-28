@@ -13,5 +13,5 @@ public interface ICustomersController {
     public ResponseEntity<List<CustomersDTO>> getAllUser();
 
     @GetMapping("/{codigo}")
-    public ResponseEntity<CustomersDTO> getUser(@PathVariable(value = "codigo") String cpf);
+    public ResponseEntity<CustomersDTO> getUser(@PathVariable(value = "codigo") String cpf) throws RuntimeException;
 }
