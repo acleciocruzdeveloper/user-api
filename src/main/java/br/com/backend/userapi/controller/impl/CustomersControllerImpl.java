@@ -3,32 +3,35 @@ package br.com.backend.userapi.controller.impl;
 import br.com.backend.userapi.controller.ICustomersController;
 import br.com.backend.userapi.domain.dto.CustomersDTO;
 import br.com.backend.userapi.service.ICustomersService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
+@Slf4j
+@RequiredArgsConstructor
 @RequestMapping("/customers")
 public class CustomersControllerImpl implements ICustomersController {
 
     private final ICustomersService service;
 
-    public CustomersControllerImpl(ICustomersService service) {
-        this.service = service;
-    }
-
     @Override
     public ResponseEntity<List<CustomersDTO>> getAllUser() {
-        return null;
+        log.info("get all customers");
+        return service.getCustomer();
     }
 
     @Override
     public ResponseEntity<CustomersDTO> getUser(String cpf) {
-        Optional<CustomersDTO> userByCpf = service.getUserByCpf(cpf);
-        return ResponseEntity.ok().body(userByCpf.get());
+        log.info("search customer by document");
+        return service.getUserByCpf(cpf)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new RuntimeException("Customer not found!"));
+
     }
 
 }

@@ -5,9 +5,13 @@ import br.com.backend.userapi.domain.dto.CustomersDTO;
 import br.com.backend.userapi.repositories.CustomersRepository;
 import br.com.backend.userapi.service.ICustomersService;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
+
 @Service
 public class CustomersServiceImpl implements ICustomersService {
     private final ModelMapper modelMapper;
@@ -23,7 +27,14 @@ public class CustomersServiceImpl implements ICustomersService {
         return repository.getUserByCpf(cpf).map(this::toUserDto);
     }
 
-    private CustomersDTO toUserDto(Customers model){
+    @Override
+    public ResponseEntity<List<CustomersDTO>> getCustomer() {
+        List<Customers> customers = repository.findAll();
+        Stream<CustomersDTO> customersDTOStream = customers.stream().map(this::toUserDto);
+        return ResponseEntity.ok().body(customersDTOStream.toList());
+    }
+
+    private CustomersDTO toUserDto(Customers model) {
         return modelMapper.map(model, CustomersDTO.class);
     }
 }
