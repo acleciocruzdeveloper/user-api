@@ -34,4 +34,10 @@ public class CustomersControllerImpl implements ICustomersController {
 
     }
 
+    @Override
+    public ResponseEntity<CustomersDTO> createdCustomer(CustomersDTO data) {
+        log.info("created customer");
+        return service.createCustomer(data);
+    }
+
 }
