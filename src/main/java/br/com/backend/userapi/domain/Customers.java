@@ -1,5 +1,6 @@
 package br.com.backend.userapi.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,11 +24,14 @@ public class Customers implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    @JsonProperty("cpf_cnpj")
     private String cpf;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_endereco", nullable = false)
     private Address endereco;
     private String email;
+    private String password;
     private String telefone;
+    @JsonProperty("data_cadastro")
     private Date dataCadastro;
 }
