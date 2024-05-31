@@ -47,4 +47,10 @@ public class CustomersController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/customers/search")
+    public ResponseEntity<List<CustomersDTO>> searchByName(@RequestParam(name = "nome") String nome){
+        List<CustomersDTO> customersDTOS = service.queryByName(nome);
+        return ResponseEntity.ok().body(customersDTOS.stream().toList());
+    }
+
 }

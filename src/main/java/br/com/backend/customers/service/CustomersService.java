@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -30,6 +31,7 @@ public class CustomersService {
         return repository.findByCpf(cpf)
                 .map(this::toCustomerDTO);
     }
+
     public ResponseEntity<List<CustomersDTO>> getCustomer() {
         List<Customers> customers = repository.findAll();
         Stream<CustomersDTO> customersDTOStream = customers.stream().map(this::toCustomerDTO);
@@ -63,6 +65,13 @@ public class CustomersService {
                     log.warn("Customer with id: {} not found", id);
                     return Optional.empty();
                 });
+    }
+
+    public List<CustomersDTO> queryByName(String nome) {
+        log.info("Fetching customers with name: {}", nome);
+        return repository.queryByNome(nome).stream()
+                .map(this::toCustomerDTO)
+                .collect(Collectors.toList());
     }
 
     private CustomersDTO toCustomerDTO(Customers model) {
