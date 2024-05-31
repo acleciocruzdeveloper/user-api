@@ -1,4 +1,4 @@
-package br.com.backend.userapi.domain.dto;
+package br.com.backend.customers.domain.dto;
 
 import java.time.LocalDateTime;
 

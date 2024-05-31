@@ -1,6 +1,6 @@
-package br.com.backend.userapi.domain;
+package br.com.backend.customers.domain;
 
-import br.com.backend.userapi.enums.EUnidadesFederativas;
+import br.com.backend.customers.enums.EUnidadesFederativas;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
