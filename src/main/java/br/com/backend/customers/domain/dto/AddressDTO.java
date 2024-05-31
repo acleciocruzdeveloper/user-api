@@ -1,6 +1,6 @@
-package br.com.backend.userapi.domain.dto;
+package br.com.backend.customers.domain.dto;
 
-import br.com.backend.userapi.enums.EUnidadesFederativas;
+import br.com.backend.customers.enums.EUnidadesFederativas;
 import lombok.Data;
 
 @Data

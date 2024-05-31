@@ -1,9 +1,9 @@
-package br.com.backend.userapi.enums;
+package br.com.backend.customers.enums;
 
 public enum EHandlers {
     NOT_FOUND("not found");
 
-    private String value;
+    private final String value;
 
     EHandlers(String value) {
         this.value = value;

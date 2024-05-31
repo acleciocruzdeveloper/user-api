@@ -1,18 +1,18 @@
-package br.com.backend.userapi.service.impl;
+package br.com.backend.customers.service;
 
-import br.com.backend.userapi.domain.Address;
-import br.com.backend.userapi.domain.Customers;
-import br.com.backend.userapi.domain.dto.CustomersDTO;
-import br.com.backend.userapi.domain.dto.EmailExistiException;
-import br.com.backend.userapi.repositories.CustomersRepository;
-import br.com.backend.userapi.repositories.IAddressRepository;
-import br.com.backend.userapi.service.ICustomersService;
+import br.com.backend.customers.domain.Address;
+import br.com.backend.customers.domain.Customers;
+import br.com.backend.customers.domain.dto.CustomersDTO;
+import br.com.backend.customers.domain.dto.EmailExistiException;
+import br.com.backend.customers.repositories.IAddressRepository;
+import br.com.backend.customers.repositories.ICustomersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,24 +21,22 @@ import java.util.stream.Stream;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CustomersServiceImpl implements ICustomersService {
+public class CustomersService {
     private final ModelMapper modelMapper;
-    private final CustomersRepository repository;
+    private final ICustomersRepository repository;
     private final IAddressRepository addressRepository;
 
-    @Override
-    public Optional<CustomersDTO> getUserByCpf(String cpf) {
-        return repository.getUserByCpf(cpf).map(this::toUserDto);
+    public Optional<CustomersDTO> getCustomerByCpf(String cpf) {
+        return repository.findByCpf(cpf)
+                .map(this::toCustomerDTO);
     }
-
-    @Override
     public ResponseEntity<List<CustomersDTO>> getCustomer() {
         List<Customers> customers = repository.findAll();
-        Stream<CustomersDTO> customersDTOStream = customers.stream().map(this::toUserDto);
+        Stream<CustomersDTO> customersDTOStream = customers.stream().map(this::toCustomerDTO);
         return ResponseEntity.ok().body(customersDTOStream.toList());
     }
 
-    @Override
+    @Transactional
     public ResponseEntity<CustomersDTO> createCustomer(CustomersDTO data) throws RuntimeException {
         try {
             if (repository.existsByEmail(data.getEmail())) {
@@ -58,7 +56,16 @@ public class CustomersServiceImpl implements ICustomersService {
         }
     }
 
-    private CustomersDTO toUserDto(Customers model) {
+    public Optional<CustomersDTO> getCustomerById(long id) {
+        log.info("Fetching customer with id: {}", id);
+        return repository.findById(id).map(this::toCustomerDTO)
+                .or(() -> {
+                    log.warn("Customer with id: {} not found", id);
+                    return Optional.empty();
+                });
+    }
+
+    private CustomersDTO toCustomerDTO(Customers model) {
         return modelMapper.map(model, CustomersDTO.class);
     }
 

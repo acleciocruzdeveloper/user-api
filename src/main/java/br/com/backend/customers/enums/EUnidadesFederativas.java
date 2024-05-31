@@ -1,4 +1,4 @@
-package br.com.backend.userapi.enums;
+package br.com.backend.customers.enums;
 
 public enum EUnidadesFederativas {
     AC("Região Norte", "Acre"),
