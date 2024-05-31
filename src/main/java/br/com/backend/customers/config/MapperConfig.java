@@ -1,7 +1,7 @@
-package br.com.backend.userapi.config;
+package br.com.backend.customers.config;
 
-import br.com.backend.userapi.domain.Customers;
-import br.com.backend.userapi.domain.dto.CustomersDTO;
+import br.com.backend.customers.domain.Customers;
+import br.com.backend.customers.domain.dto.CustomersDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
