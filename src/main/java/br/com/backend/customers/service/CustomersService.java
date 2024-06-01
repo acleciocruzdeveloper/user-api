@@ -4,6 +4,7 @@ import br.com.backend.customers.domain.Address;
 import br.com.backend.customers.domain.Customers;
 import br.com.backend.customers.domain.dto.CustomersDTO;
 import br.com.backend.customers.domain.dto.EmailExistiException;
+import br.com.backend.customers.enums.ECustomerStatus;
 import br.com.backend.customers.repositories.IAddressRepository;
 import br.com.backend.customers.repositories.ICustomersRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +33,11 @@ public class CustomersService {
                 .map(this::toCustomerDTO);
     }
 
-    public ResponseEntity<List<CustomersDTO>> getCustomer() {
-        List<Customers> customers = repository.findAll();
-        Stream<CustomersDTO> customersDTOStream = customers.stream().map(this::toCustomerDTO);
-        return ResponseEntity.ok().body(customersDTOStream.toList());
+    public List<CustomersDTO> getCustomer() {
+        return repository.findByStatusCustomer(ECustomerStatus.ACTIVE)
+                .stream()
+                .map(this::toCustomerDTO)
+                .toList();
     }
 
     @Transactional
@@ -67,11 +69,24 @@ public class CustomersService {
                 });
     }
 
-    public List<CustomersDTO> queryByName(String nome) {
-        log.info("Fetching customers with name: {}", nome);
-        return repository.queryByNome(nome).stream()
+    public List<CustomersDTO> queryByName(String name) {
+        log.info("Fetching customers with name: {}", name);
+        return repository.queryByNomeLike(name)
+                .stream()
                 .map(this::toCustomerDTO)
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    public void inactiveCustomer(long id) {
+        Optional<Customers> customers = repository.findById(id);
+        if (customers.isPresent()) {
+            Customers customer = customers.get();
+            customer.setStatusCustomer(ECustomerStatus.INACTIVE);
+            repository.save(customer);
+        } else {
+            log.error("customer with id: {} not found", id);
+            throw new RuntimeException("Customer not found");
+        }
     }
 
     private CustomersDTO toCustomerDTO(Customers model) {
