@@ -21,7 +21,8 @@ public class CustomersController {
     @GetMapping("/customers")
     public ResponseEntity<List<CustomersDTO>> getAllCustomers() {
         log.info("get all customers");
-        return service.getCustomer();
+        List<CustomersDTO> dtoList = service.getCustomer();
+        return ResponseEntity.ok().body(dtoList);
     }
 
     @GetMapping("/customers/cpf/{cpf}")
@@ -45,6 +46,22 @@ public class CustomersController {
         return service.getCustomerById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/customers/search")
+    public ResponseEntity<List<CustomersDTO>> searchByName(@RequestParam String name) {
+        List<CustomersDTO> customersDTOS = service.queryByName(name);
+        return ResponseEntity.ok().body(customersDTOS);
+    }
+
+    @PatchMapping("/customers/inactive/{id}")
+    public ResponseEntity<Void> inactiveCustomer(@PathVariable long id) {
+        try {
+            service.inactiveCustomer(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }
