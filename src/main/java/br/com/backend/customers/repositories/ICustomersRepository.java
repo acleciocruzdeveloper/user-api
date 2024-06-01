@@ -1,6 +1,7 @@
 package br.com.backend.customers.repositories;
 
 import br.com.backend.customers.domain.Customers;
+import br.com.backend.customers.enums.ECustomerStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -12,5 +13,7 @@ public interface ICustomersRepository extends JpaRepository<Customers, Long> {
 
     boolean existsByEmail(String email);
 
-    List<Customers> queryByNome(String nome);
+    List<Customers> findByStatusCustomer(ECustomerStatus status);
+
+    List<Customers> queryByNomeLike(String name);
 }
