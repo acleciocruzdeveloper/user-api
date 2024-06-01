@@ -3,7 +3,7 @@ package br.com.backend.customers.service;
 import br.com.backend.customers.domain.Address;
 import br.com.backend.customers.domain.Customers;
 import br.com.backend.customers.domain.dto.CustomersDTO;
-import br.com.backend.customers.domain.dto.EmailExistiException;
+import br.com.backend.customers.exceptions.EmailExistiException;
 import br.com.backend.customers.enums.ECustomerStatus;
 import br.com.backend.customers.repositories.IAddressRepository;
 import br.com.backend.customers.repositories.ICustomersRepository;
@@ -17,8 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service

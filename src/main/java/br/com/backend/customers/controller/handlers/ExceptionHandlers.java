@@ -1,6 +1,6 @@
 package br.com.backend.customers.controller.handlers;
 
-import br.com.backend.customers.domain.dto.ErrorResponse;
+import br.com.backend.customers.exceptions.ErrorResponse;
 import br.com.backend.customers.enums.EHandlers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
