@@ -1,4 +1,4 @@
-package br.com.backend.customers.domain.dto;
+package br.com.backend.customers.exceptions;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
